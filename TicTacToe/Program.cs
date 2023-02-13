@@ -1,7 +1,4 @@
-﻿ /* TODO:
-  * 1. Tie case
- */
-namespace TicTacToe
+﻿namespace TicTacToe
 {
     internal class Program
     {
@@ -21,13 +18,15 @@ namespace TicTacToe
             while(playAgain == 'y')
             {
                 StartNewGame();
-                while (!IsWinner())      //while there is no winner -> the game continues
+                while (!IsWinner() && !IsTie())      //while there is no winner -> the game continues
                 {
                     Game();
                     RefreshBoard();
                 }
-
-                Console.Write("\n{0} is a winner! Would you like to play again? [y/n]: ", winner);
+                if(winner == "No winner")
+                    Console.Write("\nTied! There is no winner. Would you like to play again? [y/n]: ");
+                else
+                    Console.Write("\n{0} is a winner! Would you like to play again? [y/n]: ", winner);
                 char input = Console.ReadKey().KeyChar;
                 while (Char.ToLower(input) != 'y' && Char.ToLower(input) != 'n')
                 {
@@ -124,6 +123,24 @@ namespace TicTacToe
             }
             winner = "No winner";
             return false;
+        }
+
+        /// <summary>
+        /// This method checks whether the game ended with a Tie
+        /// </summary>
+        /// <returns>true if there was a tie or false if there was not</returns>
+        static bool IsTie()
+        {
+            for(int i=0; i<3; i++)
+            {
+                for(int j=0; j<3; j++)
+                {
+                    if (board[i, j] != 'O' && board[i, j] != 'X')
+                        return false;
+                }
+            }
+            winner = "No winner";
+            return true;
         }
 
         /// <summary>
